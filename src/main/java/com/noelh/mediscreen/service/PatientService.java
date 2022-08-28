@@ -5,6 +5,7 @@ import com.noelh.mediscreen.model.Patient;
 import com.noelh.mediscreen.repository.PatientRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -21,6 +22,9 @@ public class PatientService {
     }
 
     public Patient getPatientById(Long id){
+        if (!patientRepository.existsById(id)){
+            throw new EntityNotFoundException("Id not found : " +id);
+        }
         return patientRepository.getReferenceById(id);
     }
 

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
+
 @Slf4j
 @Controller
 @RequestMapping("/patient")
@@ -43,7 +45,14 @@ public class PatientController {
     @GetMapping("/update/{id}")
     public String getUpdatePatient(@PathVariable("id") Long id,Model model){
         log.info("GET /patient/update/{}", id);
-        model.addAttribute("patient", patientService.getPatientById(id));
+        Patient patient;
+        try {
+            patient = patientService.getPatientById(id);
+        } catch (EntityNotFoundException e) {
+            log.error("GET /patient/update/{} : ERROR = {}", id, e.getMessage());
+            return "redirect:/patient";
+        }
+        model.addAttribute("patient", patient);
         return "patient/UpdatePatient";
     }
 
@@ -57,7 +66,12 @@ public class PatientController {
     @GetMapping("/delete/{id}")
     public String deletePatient(@PathVariable("id") Long id){
         log.info("GET /patient/delete/{}", id);
-        patientService.deletePatient(id);
+        try {
+            patientService.deletePatient(id);
+        } catch (EntityNotFoundException e) {
+            log.error("GET /patient/delete/{} : ERROR = {}", id, e.getMessage());
+            return "redirect:/patient";
+        }
         return "redirect:/patient";
     }
 }
