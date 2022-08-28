@@ -6,7 +6,6 @@ import com.noelh.mediscreen.service.PatientService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -29,30 +28,35 @@ public class PatientController {
 
     @GetMapping("/add")
     public String getAddPatient(Model model){
+        log.info("GET /patient/add");
         model.addAttribute("patientDTO", new PatientDTO());
         return "patient/AddPatient";
     }
 
     @PostMapping("/add")
     public String postAddPatient(@ModelAttribute PatientDTO patientDTO){
+        log.info("POST /patient/add");
         patientService.addPatient(patientDTO);
         return "redirect:/patient";
     }
 
     @GetMapping("/update/{id}")
     public String getUpdatePatient(@PathVariable("id") Long id,Model model){
+        log.info("GET /patient/update/{}", id);
         model.addAttribute("patient", patientService.getPatientById(id));
         return "patient/UpdatePatient";
     }
 
-    @PostMapping("/update")
-    public String postUpdatePatient(@ModelAttribute Patient patient){
-        patientService.updatePatient(patient.getId(), new PatientDTO(patient.getLastName(), patient.getFirstName()));
+    @PostMapping("/update/{id}")
+    public String postUpdatePatient(@PathVariable("id") Long id, @ModelAttribute Patient patient){
+        log.info("POST /patient/update/{}", id);
+        patientService.updatePatient(id, new PatientDTO(patient.getLastName(), patient.getFirstName()));
         return "redirect:/patient";
     }
 
     @GetMapping("/delete/{id}")
     public String deletePatient(@PathVariable("id") Long id){
+        log.info("GET /patient/delete/{}", id);
         patientService.deletePatient(id);
         return "redirect:/patient";
     }
