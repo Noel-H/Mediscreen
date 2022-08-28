@@ -5,13 +5,13 @@
     <title>Patient</title>
 </head>
 <body>
-<p>Patient page</p>
+<p>Patient page | <a th:href="@{/patient/add}">Add New Patient</a></p>
 <table>
     <tbody>
     <tr th:each="patient : ${patientList}">
         <td th:text="${patient.getLastName()}">LastName</td>
         <td th:text="${patient.getFirstName()}">FirstName</td>
-        <td>Update</td>
+        <td><a th:href="@{/patient/update/{id}(id=${patient.getId})}">Update</a></td>
         <td><a th:href="@{/patient/delete/{id}(id=${patient.getId})}">Delete</a></td>
     </tr>
     </tbody>
