@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient</title>
+</head>
+<body>
+<p>Patient page</p>
+<table>
+    <tbody>
+    <tr th:each="patient : ${patientList}">
+        <td th:text="${patient.getLastName()}">LastName</td>
+        <td th:text="${patient.getFirstName()}">FirstName</td>
+        <td>Update</td>
+        <td><a th:href="@{/patient/delete/{id}(id=${patient.getId})}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
