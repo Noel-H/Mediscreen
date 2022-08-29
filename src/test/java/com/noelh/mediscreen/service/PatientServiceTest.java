@@ -97,19 +97,47 @@ class PatientServiceTest {
         patientDTO.setLastName("TestLastName");
         patientDTO.setFirstName("TestFirstName");
 
-        Patient expectedResult = new Patient();
-        expectedResult.setId(1L);
-        expectedResult.setLastName("TestLastName");
-        expectedResult.setFirstName("TestFirstName");
+        Patient patient = new Patient();
+        patient.setId(1L);
+        patient.setLastName("TestLastName");
+        patient.setFirstName("TestFirstName");
 
         when(patientRepository.existsById(1L)).thenReturn(true);
+        when(patientService.getPatientById(1L)).thenReturn(patient);
 
         //When
-        Patient result = patientService.updatePatient(1L, patientDTO);
+        patientService.updatePatient(1L, patientDTO);
 
         //Then
-        verify(patientRepository,times(1)).save(expectedResult);
-        assertThat(result).isEqualTo(expectedResult);
+        verify(patientRepository,times(1)).save(patient);
+    }
+
+    @Test
+    public void deletePatient_Should_Return_Patient(){
+        //Given
+        Patient patient = new Patient();
+        patient.setId(1L);
+        patient.setLastName("TestLastName");
+        patient.setFirstName("TestFirstName");
+
+        when(patientRepository.existsById(1L)).thenReturn(true);
+        when(patientService.getPatientById(1L)).thenReturn(patient);
+
+        //When
+        patientService.deletePatient(1L);
+
+        //Then
+        verify(patientRepository,times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void deletePatient_Should_Return_Exception(){
+        //Given
+        when(patientRepository.existsById(1L)).thenReturn(false);
+
+        //When
+        //Then
+        assertThrows(EntityNotFoundException.class, () -> patientService.deletePatient(1L));
     }
 
 }
