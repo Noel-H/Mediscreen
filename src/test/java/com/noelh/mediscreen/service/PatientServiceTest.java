@@ -11,8 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.persistence.EntityNotFoundException;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -96,6 +95,26 @@ class PatientServiceTest {
         PatientDTO patientDTO = new PatientDTO();
         patientDTO.setLastName("TestLastName");
         patientDTO.setFirstName("TestFirstName");
+
+        Patient patient = new Patient();
+        patient.setId(1L);
+        patient.setLastName("TestLastName");
+        patient.setFirstName("TestFirstName");
+
+        when(patientRepository.existsById(1L)).thenReturn(true);
+        when(patientService.getPatientById(1L)).thenReturn(patient);
+
+        //When
+        patientService.updatePatient(1L, patientDTO);
+
+        //Then
+        verify(patientRepository,times(1)).save(patient);
+    }
+
+    @Test
+    public void updatePatient_Without_LastName_And_FirstName_Should_Return_Patient(){
+        //Given
+        PatientDTO patientDTO = new PatientDTO();
 
         Patient patient = new Patient();
         patient.setId(1L);
