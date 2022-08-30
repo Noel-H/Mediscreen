@@ -18,7 +18,7 @@ import javax.persistence.EntityNotFoundException;
 @RequestMapping("/patient")
 public class PatientController {
 
-    private PatientService patientService;
+    private final PatientService patientService;
 
     public PatientController(PatientService patientService){
         this.patientService = patientService;
