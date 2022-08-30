@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 
+/**
+ * Patient Controller
+ */
 @Slf4j
 @Controller
 @RequestMapping("/patient")
@@ -21,6 +24,11 @@ public class PatientController {
         this.patientService = patientService;
     }
 
+    /**
+     * GET request to access /patient endpoint
+     * @param model used for the html template
+     * @return patient/Patient.html
+     */
     @GetMapping("")
     public String getPatient(Model model){
         log.info("GET /patient");
@@ -28,6 +36,11 @@ public class PatientController {
         return "patient/Patient";
     }
 
+    /**
+     * GET request to access /patient/add page
+     * @param model used for the html template
+     * @return patient/AddPatient.html
+     */
     @GetMapping("/add")
     public String getAddPatient(Model model){
         log.info("GET /patient/add");
@@ -35,6 +48,11 @@ public class PatientController {
         return "patient/AddPatient";
     }
 
+    /**
+     * POST request to add patient at /patient/add endpoint
+     * @param patientDTO used for the html template
+     * @return a redirection at /patient endpoint
+     */
     @PostMapping("/add")
     public String postAddPatient(@ModelAttribute PatientDTO patientDTO){
         log.info("POST /patient/add");
@@ -42,6 +60,12 @@ public class PatientController {
         return "redirect:/patient";
     }
 
+    /**
+     * GET request to access /update/{id}
+     * @param id used for the html template
+     * @param model used for the html template
+     * @return patient/UpdatePatient.html
+     */
     @GetMapping("/update/{id}")
     public String getUpdatePatient(@PathVariable("id") Long id,Model model){
         log.info("GET /patient/update/{}", id);
@@ -56,6 +80,12 @@ public class PatientController {
         return "patient/UpdatePatient";
     }
 
+    /**
+     * POST request to update at /update/{id} endpoint
+     * @param id used for the html template
+     * @param patient used for the html template
+     * @return a redirection at /patient endpoint
+     */
     @PostMapping("/update/{id}")
     public String postUpdatePatient(@PathVariable("id") Long id, @ModelAttribute Patient patient){
         log.info("POST /patient/update/{}", id);
@@ -63,6 +93,11 @@ public class PatientController {
         return "redirect:/patient";
     }
 
+    /**
+     * GET request to delete at /delete/{id} endpoint
+     * @param id used for the html template
+     * @return a redirection at /patient endpoint
+     */
     @GetMapping("/delete/{id}")
     public String deletePatient(@PathVariable("id") Long id){
         log.info("GET /patient/delete/{}", id);
